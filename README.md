@@ -3,33 +3,17 @@
 A 5-stage pipelined RISC-V CPU implementing the full **RV32I** base integer
 instruction set, written in VHDL and targeting a Xilinx Artix-7 FPGA.
 
-## Architecture
-
-```
-IF  →  ID  →  EX  →  MEM  →  WB
-```
-
-| Stage | Function | Main modules |
-|---|---|---|
-| IF  | Instruction fetch, PC + 4 | `program_counter`, `inst_mem`, `pc_adder`, `pc_mux` |
-| ID  | Decode, register read, immediate generation, hazard detection | `control_unit`, `register_file`, `imm_gen`, `hazard_detection_unit` |
-| EX  | ALU, branch comparison, branch/jump target | `alu`, `alu_control`, `forwarding_mux`, `comparator`, `target_adder` |
-| MEM | Data memory access | `data_memory` |
-| WB  | Write-back select | `wb_mux` |
-
 **Hazard handling**
 - **Data hazards:** forwarding from EX/MEM and MEM/WB to the EX stage (ALU and branch comparator)
 - **Load-use hazards:** detected in ID, resolved with a 1-cycle stall
 - **Control hazards:** branches and jumps are resolved in EX; a taken branch or jump flushes the two younger instructions (2-cycle penalty)
-
-**Memory access:** `lb`, `lh`, `lw`, `lbu`, `lhu`, `sb`, `sh`, `sw` with sign and zero extension.
 
 <!-- Datapath diagram -->
 ![Datapath](docs/datapath.png)
 
 ## Implementation Results
 
-Device: `xc7a35t...` &nbsp;|&nbsp; Tool: Vivado 2025.2
+Device: `xc7a35t` &nbsp;
 
 | Resource | Used | Available | Utilization |
 |---|---|---|---|
