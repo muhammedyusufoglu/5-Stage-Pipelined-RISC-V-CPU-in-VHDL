@@ -6,10 +6,10 @@ handled with forwarding, load-use stalls and branch flushing.
 | | |
 |---|---|
 | Device | Artix-7 `xc7a35t...` |
-| Frequency | MHz |
-| WNS | ns |
-| LUT | |
-| FF | |
+| Frequency | 100 MHz |
+| WNS | 0.137 ns |
+| LUT | 4097 |
+| FF | 1754 |
 
 ## Simulation
 
