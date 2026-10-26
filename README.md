@@ -1,1 +1,0 @@
-# 5-Staged-Pipelined-RISC-V-CPU-in-VHDL
