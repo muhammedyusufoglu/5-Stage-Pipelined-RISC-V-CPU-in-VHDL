@@ -25,8 +25,8 @@ checksum over all results and writes the verdict to `x31`:
 - `x31 = 0x600D` → all tests passed
 - `x31 = 0x0BAD` → at least one test failed
 
-The testbench (`sim/tb_core.vhd`) runs the CPU with a 10 ns clock and writes
-`PC` and `ALU_Result` for every cycle to `trace.csv`. Run it with `run 60 us`.
+The testbench (`simulation/tb_riscv.vhd`) runs the CPU with a 10 ns clock and writes
+`PC` and `ALU_Result` for every cycle to `trace.csv`. Run it with `run 50 us`.
 
 **Result:** `x31 = 0x600D`
 
