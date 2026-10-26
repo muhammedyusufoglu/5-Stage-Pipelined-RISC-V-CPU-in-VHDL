@@ -11,6 +11,8 @@ handled with forwarding, load-use stalls and branch flushing.
 | LUT | 4097 |
 | FF | 1754 |
 
+Measured CPI on the test program: 1.40
+
 ## Simulation
 
 The CPU was tested with a self-checking program (`programs/test_program.S`,
