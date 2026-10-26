@@ -43,17 +43,17 @@ entity target_adder is
 end target_adder;
 
 architecture Behavioral of target_adder is
-
+signal new_target0 : unsigned(31 downto 0);
 begin
     
     process(all) begin
         if Adder_Src = '0' then
-           new_target <= std_logic_vector(unsigned(rs1) + unsigned(imm));
+           new_target0 <= (unsigned(rs1) + unsigned(imm));
         else
-            new_target <= std_logic_vector(unsigned(pc) + unsigned(imm));
+            new_target0 <= (unsigned(pc) + unsigned(imm));
         end if;
         
     end process;
 
-
+new_target <= std_logic_vector(new_target0(31 downto 1)) & '0';
 end Behavioral;

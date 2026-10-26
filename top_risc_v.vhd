@@ -125,6 +125,7 @@ architecture Behavioral of top_risc_v is
     signal read_data_signal_2       : std_logic_vector(31 downto 0);  -- Output of Memory in WB
     signal write_register_signal    : std_logic_vector(31 downto 0);  -- Output of WB_Mux   
     signal flush_signal             : std_logic; -- will be defined as Branch_Taken OR Jump
+    signal mem_fwd_signal           : std_logic_vector(31 downto 0);  -- MEM'den forward edilecek doğru sonuç (ALU / imm / PC+4)
     ---------------------------------------------------------------------------------------------------------
     ---------------------------------------------------------------------------------------------------------
     signal opcode_signal            : std_logic_vector(6 downto 0);  -- Created from Instruction
@@ -135,6 +136,7 @@ architecture Behavioral of top_risc_v is
     signal rd_signal_4              : std_logic_vector(4 downto 0);  -- Created from Instruction
     signal funct3_signal            : std_logic_vector(2 downto 0);  -- Created from Instruction
     signal funct3_signal_2          : std_logic_vector(2 downto 0);  -- Created from Instruction
+    signal funct3_signal_3          : std_logic_vector(2 downto 0);  -- funct3 in MEM (data memory erişim boyutu)
     signal rs1_a_signal             : std_logic_vector(4 downto 0);  -- Created from Instruction
     signal rs1_a_signal_2           : std_logic_vector(4 downto 0);  -- Created from Instruction
     signal rs2_a_signal             : std_logic_vector(4 downto 0);  -- Created from Instruction
@@ -233,6 +235,7 @@ data_memory_inst: entity work.data_memory
 --      reset           => reset_signal,
         mem_read        => Mem_Read_signal_3,
         mem_write       => Mem_Write_signal_3,
+        funct3          => funct3_signal_3,
         address         => ALU_Result_signal_2,
         data_in         => muxB_signal_2,
         data_out        => read_data_signal
@@ -251,6 +254,7 @@ ex_mem_reg_inst: entity work.ex_mem_reg
         rs2_for         => muxB_signal,
         imm             => imm_signal_2,
         inst0           => inst0_signal_3,
+        funct3          => funct3_signal_2,
         --------------------------------------------
         mem_write_mem   => Mem_Write_signal_3,
         mem_read_mem    => Mem_Read_signal_3,
@@ -260,7 +264,8 @@ ex_mem_reg_inst: entity work.ex_mem_reg
         ALU_Result_mem  => ALU_Result_signal_2,
         rs2_for_mem     => muxB_signal_2,
         imm_mem         => imm_signal_3,    
-        inst0_mem       => inst0_signal_4                      
+        inst0_mem       => inst0_signal_4,
+        funct3_mem      => funct3_signal_3
 
     );
 forwarding_mux_inst: entity work.forwarding_mux
@@ -268,7 +273,7 @@ forwarding_mux_inst: entity work.forwarding_mux
         rs1             => rs1_signal_2,
         rs2             => rs2_signal_2,
         write_data      => write_register_signal,
-        ALU_Result      => ALU_Result_signal_2,
+        ALU_Result      => mem_fwd_signal,
         for_a           => for_a_signal,
         for_b           => for_b_signal,
         mux_a           => muxA_signal,
@@ -460,6 +465,12 @@ wb_mux_inst: entity work.wb_mux
     
     );
     
+-- MEM aşamasından forward edilecek değer: wb_mux ile aynı seçim
+with mem_to_reg_3 select
+    mem_fwd_signal <= inst0_signal_4      when "10",    -- JAL/JALR: PC+4
+                      imm_signal_3        when "11",    -- LUI: imm
+                      ALU_Result_signal_2 when others;  -- R, I, AUIPC
+
 ALU_Result <= ALU_Result_signal_3;  
 PC_out     <= current_pc_signal;
   
