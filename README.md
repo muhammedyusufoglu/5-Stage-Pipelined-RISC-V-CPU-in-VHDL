@@ -15,9 +15,7 @@ Measured CPI on the test program: 1.40
 
 ## Simulation
 
-The CPU was tested with a self-checking program (`programs/test_program.S`,
-484 instructions) that runs every RV32I instruction, including loads/stores,
-branches, jumps, function calls and the pipeline hazard cases.
+The CPU was tested with a self-checking program that runs every RV32I instruction types, with 484 instructions.
 
 Each test writes its result to memory. At the end, the program computes a
 checksum over all results and writes the verdict to `x31`:
