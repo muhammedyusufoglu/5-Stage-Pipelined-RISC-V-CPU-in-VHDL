@@ -9,7 +9,7 @@ file mkdir $out_dir
 file mkdir $bit_dir
 
 
-read_vhdl [glob [file join $script_dir "sources" "*.vhd"]]
+read_vhdl -vhdl2008 [glob [file join $script_dir "sources" "*.vhd"]]
 read_mem [file join $script_dir "program" "inst_program.mem"]
 read_xdc [file join $script_dir "constr" "basys3.xdc"]
 
