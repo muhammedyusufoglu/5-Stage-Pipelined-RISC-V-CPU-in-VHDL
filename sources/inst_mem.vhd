@@ -34,7 +34,7 @@ use IEEE.STD_LOGIC_TEXTIO.ALL;
 entity inst_mem is
     generic(
         RAM_DEPTH : integer := 2048;
-        FILE_NAME : string  := "C:\Users\myusu\Desktop\pipelined_riscv\pipelined_riscv.srcs\sources_1\imports\new\instr_program.mem"
+        FILE_NAME : string  := "..."
     );
     port(
        current_inst : in std_logic_vector(31 downto 0);
